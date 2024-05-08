@@ -1,0 +1,19 @@
+
+<!-- chat.component.html -->
+<div class="chat-container" >
+  <div class="messages" #messageContainer>
+    <div *ngFor="let message of items | async">
+      <span *ngIf="!message.isOwn" class="name-others">{{message.sender || 'unknown'}}</span> <!-- Text displaying name -->
+      <div class="message" [ngClass]="{ 'logged-in': message.isOwn, 'other-user': !message.isOwn }">
+        <span *ngIf="message.isOwn" class="text-wrapper text-wrapper-own">{{ message.content }}</span>
+        <span *ngIf="!message.isOwn" class="text-wrapper text-wrapper-others">{{ message.content }}</span>
+      </div>
+      <span *ngIf="message.isOwn" class="name-own">Name</span> <!-- Text displaying name -->
+    </div>
+  </div>
+ 
+</div>
+<div class="input-area">
+  <input type="text" [(ngModel)]="newMessage" (keyup.enter)="onEnter($event)" placeholder="Your message..." />
+  <button (click)="sendMessage()">Send</button>
+</div>

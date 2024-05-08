@@ -1,0 +1,11 @@
+
+  
+.page-content {
+  width: 80%;  /* Adjust as desired */
+  height: 300px;
+  margin: 0 auto;  /* Center the content horizontally */
+  padding: 150px;   /* Add some padding for visual separation */
+  border: 1px solid #ddd;  /* Optional border for definition */
+  background-color: #fff;  /* Set a background color */
+}
+  

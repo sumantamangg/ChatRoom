@@ -1,0 +1,71 @@
+/* style the example-container */
+.form-container {
+    width: 400px; /* Adjust width as needed */
+    margin: 50px auto; /* Center the form horizontally */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff;
+    border: 1px solid #ddd;  /* Optional border for definition */
+    background-color: #fff;  /* Set a background color */
+  }
+  
+  /* style the mat-form-field */
+  .mat-form-field {
+    margin-bottom: 15px; /* Add spacing between fields */
+  }
+  
+  /* style the mat-label */
+  .mat-form-field mat-label {
+    color: #333; /* Adjust label text color */
+    font-weight: bold; /* Make labels stand out */
+  }
+  
+  /* style the input field */
+  .mat-input-element {
+    padding: 10px;
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 3px;
+  }
+  
+  /* style the button */
+  .mat-flat-button {
+    background-color: #3498db; /* Blue button color */
+    color: #fff; /* White button text */
+    padding: 10px 20px; /* Adjust padding for better fit */
+    border-radius: 3px;
+    cursor: pointer; /* Indicate clickable element */
+  }
+  
+  .mat-flat-button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+  }
+  
+  .submit-button {
+    display: block; /* This makes the button take up a full line */
+    margin-top: 15px; /* Add some spacing above the button */
+  }
+  
+  .form-title {
+    text-align: center; /* Center the text horizontally */
+    font-size: 1.2rem; /* Adjust font size */
+    font-weight: bold; /* Make it stand out */
+    margin-bottom: 15px; /* Add some spacing below the title */
+  }
+  
+  .form-input-element {
+    padding: 0;
+  }
+ 
+  mat-form-field {
+    width: 100%;
+  }
+  .login-link {
+    color: #333; /* Adjust link text color */
+    text-decoration: none; /* Remove underline decoration */
+  }
+  
+  .login-link:hover {
+    text-decoration: underline; /* Underline on hover for user interaction */
+  }
+  

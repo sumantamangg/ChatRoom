@@ -1,0 +1,83 @@
+/* chat.component.css */
+.chat-container {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 400px; /* Set your desired fixed height */
+}
+
+.messages {
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  display: flex;
+}
+
+.message-block {
+  display: table;
+}
+
+.logged-in {
+  text-align: right;
+  justify-content: end;
+}
+
+.text-wrapper {
+  padding: 5px 10px; /* Adjust padding as needed */
+  display: flex;
+  align-items: center; /* Center text vertically */
+  width: 550px; /* Set a fixed width */
+  word-wrap: break-word; /* Allow long words to break and wrap */
+  position: relative;
+}
+
+.text-wrapper-own {
+  background-color: #bb7676;
+  border-radius: 20px 20px 5px 20px;
+}
+.text-wrapper-others {
+  background-color: #81ad28;
+  border-radius: 5px 20px 20px 20px;
+ }
+
+.other-user {
+  text-align: left;
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.name-own {
+  text-align: right;
+  display: block;
+  margin-top: 2px; 
+  font-weight: bold/* Add some space between the text and name */
+  /* Optional styles for the text displaying the name */
+}
+.name-others {
+  text-align: left;
+  margin-top: 2px; 
+  font-weight: bold/* Add some space between the text and name */
+  /* Optional styles for the text displaying the name */
+}
