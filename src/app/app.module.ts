@@ -17,9 +17,7 @@ import { HeaderComponent } from './header/header.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatTableModule} from '@angular/material/table';
 import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
@@ -46,8 +44,6 @@ import { routes } from './app.routes';
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
-    MatListModule,
-    MatTableModule,
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(firebaseConfig.firebase), // Initialize Firebase with firebaseConfig
     AngularFireAuthModule,

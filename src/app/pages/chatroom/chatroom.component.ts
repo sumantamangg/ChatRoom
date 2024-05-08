@@ -64,4 +64,5 @@ export class ChatroomComponent implements OnInit {
       this.messageContainer!.nativeElement.scrollTop = this.messageContainer?.nativeElement.scrollHeight;
     } catch(err) { }
   }
+
 }
