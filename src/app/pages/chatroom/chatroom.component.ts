@@ -22,6 +22,7 @@ export class ChatroomComponent implements OnInit {
     this.authService.currentUser.subscribe(
       userdata =>{
         this.currentUser = userdata;
+        console.log(this.currentUser.email);
       }
     )
 
@@ -42,7 +43,7 @@ export class ChatroomComponent implements OnInit {
   sendMessage() {
     const item = {
       'content': this.newMessage,
-      'sender': this.currentUser.email || 'unknown',
+      'sender': this.currentUser?.email || 'unknown',
       'createdAt': new Date()
     }
     this.addItem(item);
@@ -64,5 +65,10 @@ export class ChatroomComponent implements OnInit {
       this.messageContainer!.nativeElement.scrollTop = this.messageContainer?.nativeElement.scrollHeight;
     } catch(err) { }
   }
+
+  ownMessage(message: any){
+    return message?.sender === this.currentUser?.email;
+  }
+  
 
 }

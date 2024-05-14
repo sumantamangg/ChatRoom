@@ -3,12 +3,12 @@
 <div class="chat-container" >
   <div class="messages" #messageContainer >
     <div *ngFor="let message of items | async">
-      <span *ngIf="!message.isOwn" class="name-others">{{message.sender || 'unknown'}}</span> <!-- Text displaying name -->
-      <div class="message" [ngClass]="{ 'logged-in': message.isOwn, 'other-user': !message.isOwn }">
-        <span *ngIf="message.isOwn" class="text-wrapper text-wrapper-own">{{ message.content }}</span>
-        <span *ngIf="!message.isOwn" class="text-wrapper text-wrapper-others">{{ message.content }}</span>
+      <span *ngIf="ownMessage(message)" class="name-own">Me</span> 
+      <span *ngIf="!ownMessage(message)" class="other-user">{{message.sender || 'unknown'}}</span> 
+      <div class="message" [ngClass]="{ 'logged-in':ownMessage(message), 'other-user': !ownMessage(message) }">
+        <span *ngIf="ownMessage(message)" class="text-wrapper text-wrapper-own">{{ message.content }}</span>
+        <span *ngIf="!ownMessage(message)" class="text-wrapper text-wrapper-others">{{ message.content }}</span>
       </div>
-      <span *ngIf="message.isOwn" class="name-own">Name</span> <!-- Text displaying name -->
     </div>
   </div>
  
