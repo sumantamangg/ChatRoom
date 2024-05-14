@@ -72,12 +72,10 @@ button {
   text-align: right;
   display: block;
   margin-top: 2px; 
-  font-weight: bold/* Add some space between the text and name */
-  /* Optional styles for the text displaying the name */
+  font-weight: bold
 }
 .name-others {
   text-align: left;
   margin-top: 2px; 
-  font-weight: bold/* Add some space between the text and name */
-  /* Optional styles for the text displaying the name */
+  font-weight: bold
 }
