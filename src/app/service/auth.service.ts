@@ -21,7 +21,7 @@ export class AuthService {
   // function to store userdetail to localStorage
   setUser(data:any) {
     sessionStorage.setItem('userData', JSON.stringify(data.user));
-    this.currentUserSubject.next(data);
+    this.currentUserSubject.next(data.user);
   }
 
   isLoggedIn(){

@@ -22,9 +22,12 @@ export class ChatroomComponent implements OnInit {
     this.authService.currentUser.subscribe(
       userdata =>{
         this.currentUser = userdata;
+<<<<<<< Updated upstream
+=======
+        console.log("machikney "+ this.currentUser.email);
+>>>>>>> Stashed changes
       }
     )
-
     const queryFn: QueryFn = (ref) => ref.orderBy('createdAt', 'asc');
 
     this.itemsCollection = this.afs.collection<any>('chatRoom', queryFn);
@@ -36,7 +39,7 @@ export class ChatroomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   sendMessage() {
@@ -65,4 +68,13 @@ export class ChatroomComponent implements OnInit {
     } catch(err) { }
   }
 
+<<<<<<< Updated upstream
+=======
+  ownMessage(message: any){
+    //console.log("yo yo"+this.currentUser?.email);
+    return message?.sender === this.currentUser?.email;
+  }
+  
+
+>>>>>>> Stashed changes
 }
