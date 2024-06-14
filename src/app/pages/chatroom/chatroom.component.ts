@@ -22,7 +22,6 @@ export class ChatroomComponent implements OnInit {
     this.authService.currentUser.subscribe(
       userdata =>{
         this.currentUser = userdata;
-        console.log(this.currentUser.email);
       }
     )
 
