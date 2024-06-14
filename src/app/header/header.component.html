@@ -1,8 +1,5 @@
 <mat-toolbar color="primary">
   <span class="logo">Chatroom</span>
-  <!-- <span class="spacer"></span>
-  <button mat-button routerLink="/">Home</button>
-  <button mat-button routerLink="/about">About</button> -->
   <button mat-button [matMenuTriggerFor]="accountMenu" [disabled]="currentUser === null">
     <mat-icon>account_circle</mat-icon>
   </button>
