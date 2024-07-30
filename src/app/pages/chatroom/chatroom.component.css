@@ -2,35 +2,36 @@
 .chat-container {
   display: flex;
   flex-direction: column-reverse;
-  height: 400px; /* Set your desired fixed height */
+  height: 400px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .messages {
   overflow-y: auto;
+  padding: 10px;
+  flex-grow: 1;
 }
 
 .message {
-  padding: 0px;
-  margin: 5px;
+  padding: 0;
+  margin: 5px 0;
   border-radius: 5px;
   display: flex;
 }
 
-.message-block {
-  display: table;
-}
-
 .logged-in {
-  text-align: right;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .text-wrapper {
-  padding: 5px 10px; /* Adjust padding as needed */
+  padding: 5px 10px;
   display: flex;
-  align-items: center; /* Center text vertically */
-  width: 550px; /* Set a fixed width */
-  word-wrap: break-word; /* Allow long words to break and wrap */
+  align-items: center;
+  max-width: 550px;
+  word-wrap: break-word;
   position: relative;
 }
 
@@ -38,13 +39,23 @@
   background-color: #bb7676;
   border-radius: 20px 20px 5px 20px;
 }
+
 .text-wrapper-others {
   background-color: #81ad28;
   border-radius: 5px 20px 20px 20px;
- }
+}
 
-.other-user {
+.name-own {
+  text-align: right;
+  display: block;
+  margin-top: 2px;
+  font-weight: bold;
+}
+
+.name-others {
   text-align: left;
+  margin-top: 2px;
+  font-weight: bold;
 }
 
 .input-area {
@@ -56,6 +67,9 @@
 input[type="text"] {
   flex-grow: 1;
   margin-right: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 button {
@@ -67,15 +81,6 @@ button {
   cursor: pointer;
 }
 
-
-.name-own {
-  text-align: right;
-  display: block;
-  margin-top: 2px; 
-  font-weight: bold
-}
-.name-others {
-  text-align: left;
-  margin-top: 2px; 
-  font-weight: bold
+button:hover {
+  background-color: #0056b3;
 }

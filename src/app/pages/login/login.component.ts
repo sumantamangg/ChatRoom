@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit{
   signupForm!: FormGroup;
   formValid: boolean = false;
   signUpActive: boolean = true;
-  currentUser: any = null;
+  currentUser: any = null; 
+  submitProgress: boolean = false;
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
@@ -39,47 +40,62 @@ export class LoginComponent implements OnInit{
     });
   }
   onSubmit() {
-    if (this.signupForm.valid && this.signUpActive){
+    if (this.signupForm.valid) {
+      this.submitProgress = true;
       const email = this.signupForm.get('email')?.value;
       const password = this.signupForm.get('password')?.value;
-       
-      this.authService.signUp(email, password)
-        .subscribe({
-          next: () =>{
-            this.mSB.open("Signup success");
-          },
-          error: (e) => {
-            if (e.code === 'auth/email-already-in-use') {
-              this.mSB.open('The email address is already in use.', 'dismiss'); // Set user-friendly message
-            } else {
-              this.mSB.open("something happened", 'dismiss'); // Handle other errors
-            }
-          },
-          complete: () => {
-            this.signupForm.reset();
-            this.signUpActive = false;
-          }
-        })
-    } 
-    else if (this.signupForm.valid && !this.signUpActive){
-      const email = this.signupForm.get('email')?.value;
-      const password = this.signupForm.get('password')?.value;
-
-      this.authService.signIn(email, password)
-        .subscribe({
-          next: ()=> this.mSB.open('Login success', 'dismiss'),
-          error: (e) => {
-            if (e.code == "auth/invalid-credential"){
-              this.mSB.open("Email and password did not match", "try again");
-            }
-          },
-          complete: ()=>{
-            this.signupForm.reset();
-            this.router.navigate(["/chatroom"]);
-          }
-        })
+  
+      if (this.signUpActive) {
+        this.handleSignUp(email, password);
+      } else {
+        this.handleSignIn(email, password);
+      }
+      this.submitProgress = false;
     }
   }
+  
+  handleSignUp(email: string, password: string) {
+    this.authService.signUp(email, password).subscribe({
+      next: () => {
+        this.mSB.open("Signup success");
+      },
+      error: (e) => {
+        if (e.code === 'auth/email-already-in-use') {
+          this.mSB.open('The email address is already in use.', 'dismiss');
+        } else {
+          this.mSB.open("Something went wrong, please try again later", 'dismiss');
+        }
+      },
+      complete: () => {
+        this.resetForm();
+      }
+    });
+  }
+  
+  handleSignIn(email: string, password: string) {
+    this.authService.signIn(email, password).subscribe({
+      next: () => {
+        this.mSB.open('Login success', 'dismiss');
+      },
+      error: (e) => {
+        if (e.code === "auth/invalid-credential") {
+          this.mSB.open("Email and password did not match", "try again");
+        } else {
+          this.mSB.open("An error occurred during login, please try again later", 'dismiss');
+        }
+      },
+      complete: () => {
+        this.router.navigate(["/chatroom"]);
+        this.resetForm();
+      }
+    });
+  }
+  
+  resetForm() {
+    this.signupForm.reset();
+    this.signUpActive = false;
+  }
+  
 
   Switch(){
     this.signUpActive = !this.signUpActive;
