@@ -1,11 +1,42 @@
-
-  
-.page-content {
-  width: 80%;  /* Adjust as desired */
-  height: 300px;
-  margin: 0 auto;  /* Center the content horizontally */
-  padding: 150px;   /* Add some padding for visual separation */
-  border: 1px solid #ddd;  /* Optional border for definition */
-  background-color: #fff;  /* Set a background color */
+/* Base styles */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
 }
-  
+
+.page-content {
+  width: 80%;  
+  margin: 0 auto;  
+  padding: 2rem;   
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  flex-grow: 1; 
+  display: flex; /* Enable flexbox on the page content */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  background-color: #fff;
+}
+
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+  .page-content {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    width: 95%;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    width: 100%;
+    padding: 0.5rem;
+    border: none; /* Remove border on small screens for better fit */
+  }
+}

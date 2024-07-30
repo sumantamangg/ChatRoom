@@ -9,17 +9,22 @@
               placeholder="Joe@example.com"
               formControlName = "email"
               required>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label> Enter your password</mat-label>
-            <input matInput
-              placeholder="******"
-              formControlName = "password"
-              required>
-          </mat-form-field>
-          <button *ngIf="signUpActive" mat-flat-button class="submit-button" color="primary" type= "submit" [disabled]="!signupForm.valid">Signup</button>
-          <button *ngIf="!signUpActive"  mat-flat-button class="submit-button" color="primary" type= "submit" [disabled]="!signupForm.valid">Login</button>
-          <a *ngIf="signUpActive" class="login-link" href="javascript:void(0)" (click)="Switch()">Already have an account? Login</a>
-          <a *ngIf="!signUpActive" class="login-link" href="javascript:void(0)" (click)="Switch()">Need an account? Signup</a>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Enter your password</mat-label>
+          <input matInput
+            placeholder="******"
+            formControlName = "password"
+            type="password"
+            required>
+        </mat-form-field>
+        <button *ngIf="signUpActive" mat-flat-button class="submit-button" 
+          color="primary" type= "submit" [disabled]="!signupForm.valid || submitProgress"
+          >Signup</button>
+        <button *ngIf="!signUpActive"  mat-flat-button class="submit-button" 
+          color="primary" type= "submit" [disabled]="!signupForm.valid || submitProgress"
+          >Login</button>
+        <a *ngIf="signUpActive" class="login-link" href="javascript:void(0)" (click)="Switch()">Already have an account? Login</a>
+        <a *ngIf="!signUpActive" class="login-link" href="javascript:void(0)" (click)="Switch()">Need an account? Signup</a>
     </form>
   </div>
