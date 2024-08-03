@@ -1,25 +1,28 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
+
 
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.component.html',
   styleUrl: './chatroom.component.css'
 })
-export class ChatroomComponent implements OnInit {
+export class ChatroomComponent implements OnInit, OnDestroy {
 
   currentUser: any = null;
   newMessage: string = ''; // Input for new messages
   @ViewChild('messageContainer') private messageContainer?: ElementRef;
+  subscription: Subscription;
 
   private itemsCollection: AngularFirestoreCollection<any>;
   items: Observable<any[]>;
+  itemsLoaded: boolean = false;
 
   constructor(private afs: AngularFirestore, private authService: AuthService) {
 
-    this.authService.currentUser.subscribe(
+    this.subscription = this.authService.currentUser.subscribe(
       userdata =>{
         this.currentUser = userdata;
       }
@@ -29,6 +32,9 @@ export class ChatroomComponent implements OnInit {
 
     this.itemsCollection = this.afs.collection<any>('chatRoom', queryFn);
     this.items = this.itemsCollection.valueChanges();
+    this.items.subscribe(() => {
+      this.itemsLoaded = true; // Set to true when data is loaded
+    });
   }
 
   addItem(item: any) {
@@ -37,6 +43,10 @@ export class ChatroomComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   sendMessage() {

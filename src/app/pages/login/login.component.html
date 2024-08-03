@@ -9,6 +9,12 @@
               placeholder="Joe@example.com"
               formControlName = "email"
               required>
+              <mat-error *ngIf="signupForm.get('email')?.hasError('required') && signupForm.get('email')?.touched">
+                Email is required.
+              </mat-error>
+              <mat-error *ngIf="signupForm.get('email')?.hasError('email') && signupForm.get('email')?.touched">
+                Invalid email address.
+              </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label> Enter your password</mat-label>
@@ -17,6 +23,12 @@
             formControlName = "password"
             type="password"
             required>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('required') && signupForm.get('password')?.touched">
+              Password is required.
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('minlength') && signupForm.get('password')?.touched">
+              Password must be at least 6 characters long.
+            </mat-error>
         </mat-form-field>
         <button *ngIf="signUpActive" mat-flat-button class="submit-button" 
           color="primary" type= "submit" [disabled]="!signupForm.valid || submitProgress"

@@ -1,19 +1,22 @@
-
+<div *ngIf="!itemsLoaded">
+  <mat-spinner></mat-spinner>
+</div>
 <!-- chat.component.html -->
-<div class="chat-container" >
-  <div class="messages" #messageContainer >
-    <div *ngFor="let message of items | async">
-      <span *ngIf="ownMessage(message)" class="name-own">Me</span> 
-      <span *ngIf="!ownMessage(message)" class="other-user">{{message.sender || 'unknown'}}</span> 
-      <div class="message" [ngClass]="{ 'logged-in':ownMessage(message), 'other-user': !ownMessage(message) }">
-        <span *ngIf="ownMessage(message)" class="text-wrapper text-wrapper-own">{{ message.content }}</span>
-        <span *ngIf="!ownMessage(message)" class="text-wrapper text-wrapper-others">{{ message.content }}</span>
+<div *ngIf="itemsLoaded">
+  <div class="chat-container">
+    <div class="messages" #messageContainer >
+      <div *ngFor="let message of items | async">
+        <span *ngIf="ownMessage(message)" class="name-own">Me</span> 
+        <span *ngIf="!ownMessage(message)" class="other-user">{{message.sender || 'unknown'}}</span> 
+        <div class="message" [ngClass]="{ 'logged-in':ownMessage(message), 'other-user': !ownMessage(message) }">
+          <span *ngIf="ownMessage(message)" class="text-wrapper text-wrapper-own">{{ message.content }}</span>
+          <span *ngIf="!ownMessage(message)" class="text-wrapper text-wrapper-others">{{ message.content }}</span>
+        </div>
       </div>
     </div>
   </div>
- 
-</div>
-<div class="input-area">
-  <input type="text" [(ngModel)]="newMessage" (keyup.enter)="onEnter($event)" placeholder="Your message..." />
-  <button (click)="sendMessage()">Send</button>
+  <div class="input-area">
+    <input type="text" [(ngModel)]="newMessage" (keyup.enter)="onEnter($event)" placeholder="Your message..." />
+    <button (click)="sendMessage()">Send</button>
+  </div>
 </div>
