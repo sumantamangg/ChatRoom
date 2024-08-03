@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from '../environment/environment';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -44,6 +45,7 @@ import { routes } from './app.routes';
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(firebaseConfig.firebase), // Initialize Firebase with firebaseConfig
     AngularFireAuthModule,

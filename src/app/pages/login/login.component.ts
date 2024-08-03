@@ -1,43 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { FirebaseUser, getDefaultFirebaseUser } from '../../models/firebaseUser.model';
+import { Subscription } from 'rxjs';
+import { AppRoutes } from '../../app.routes';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy{
 
-  signupForm!: FormGroup;
+  signupForm: FormGroup;
   formValid: boolean = false;
   signUpActive: boolean = true;
-  currentUser: any = null; 
+  currentUser: FirebaseUser;
   submitProgress: boolean = false;
+  subscription: Subscription;
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private mSB: MatSnackBar,
               private router: Router
   ) {
-    this.authService.currentUser.subscribe(
+    this.currentUser = getDefaultFirebaseUser(); //initilize the currentUser to default empty value
+    this.subscription = this.authService.currentUser.subscribe(
       userdata => {
         this.currentUser = userdata;
       }
     );
-   }
-
-  ngOnInit() { 
-    if(this.currentUser) {
-      this.router.navigate(['/chatroom']);
-    }
-
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+   }
+
+  ngOnInit() { 
+    if(this.currentUser) {
+      this.router.navigate([AppRoutes.ChatRoom]);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
   onSubmit() {
     if (this.signupForm.valid) {
@@ -85,7 +93,7 @@ export class LoginComponent implements OnInit{
         }
       },
       complete: () => {
-        this.router.navigate(["/chatroom"]);
+        this.router.navigate([AppRoutes.ChatRoom]);
         this.resetForm();
       }
     });
@@ -101,4 +109,6 @@ export class LoginComponent implements OnInit{
     this.signUpActive = !this.signUpActive;
     this.signupForm.reset();
   }
+
+  
 }
