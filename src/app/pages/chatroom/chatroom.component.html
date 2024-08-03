@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="input-area">
-    <input type="text" [(ngModel)]="newMessage" (keyup.enter)="onEnter($event)" placeholder="Your message..." />
+    <textarea [(ngModel)]="newMessage" (keyup.enter)="onEnter($event)" (input)="autoGrow($event)" placeholder="Your message..."></textarea>
     <button (click)="sendMessage()">Send</button>
   </div>
 </div>

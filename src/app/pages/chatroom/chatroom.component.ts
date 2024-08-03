@@ -80,6 +80,10 @@ export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked {
   ownMessage(message: FirebaseMessage){
     return message?.sender === this.currentUser?.email;
   }
-  
+  autoGrow(event: Event): void {
+    const target = event.target as HTMLTextAreaElement;
+    target.style.height = 'auto'; // Reset the height
+    target.style.height = target.scrollHeight + 'px'; // Set the height to the scroll height
+  }
 
 }
