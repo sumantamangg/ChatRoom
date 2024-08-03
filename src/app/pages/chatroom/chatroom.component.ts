@@ -2,6 +2,8 @@ import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild }
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
+import { FirebaseMessage } from '../../models/firebaseMessage.model';
+import { FirebaseUser, getDefaultFirebaseUser } from '../../models/firebaseUser.model';
 
 
 @Component({
@@ -9,19 +11,19 @@ import { AuthService } from '../../service/auth.service';
   templateUrl: './chatroom.component.html',
   styleUrl: './chatroom.component.css'
 })
-export class ChatroomComponent implements OnInit, OnDestroy {
+export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-  currentUser: any = null;
+  currentUser: FirebaseUser;
   newMessage: string = ''; // Input for new messages
-  @ViewChild('messageContainer') private messageContainer?: ElementRef;
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
   subscription: Subscription;
 
-  private itemsCollection: AngularFirestoreCollection<any>;
-  items: Observable<any[]>;
+  private itemsCollection: AngularFirestoreCollection<FirebaseMessage>;
+  items: Observable<FirebaseMessage[]>;
   itemsLoaded: boolean = false;
 
   constructor(private afs: AngularFirestore, private authService: AuthService) {
-
+    this.currentUser = getDefaultFirebaseUser();
     this.subscription = this.authService.currentUser.subscribe(
       userdata =>{
         this.currentUser = userdata;
@@ -75,7 +77,7 @@ export class ChatroomComponent implements OnInit, OnDestroy {
     } catch(err) { }
   }
 
-  ownMessage(message: any){
+  ownMessage(message: FirebaseMessage){
     return message?.sender === this.currentUser?.email;
   }
   
