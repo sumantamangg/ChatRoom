@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from '@angular/fire/compat/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, map, Observable, Subscription, throttleTime } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
 import { FirebaseMessage } from '../../models/firebaseMessage.model';
 import { FirebaseUser, getDefaultFirebaseUser } from '../../models/firebaseUser.model';
@@ -11,14 +11,19 @@ import { FirebaseUser, getDefaultFirebaseUser } from '../../models/firebaseUser.
   templateUrl: './chatroom.component.html',
   styleUrl: './chatroom.component.css'
 })
-export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
 
   currentUser: FirebaseUser;
   newMessage: string = ''; // Input for new messages
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   subscription: Subscription;
+  private fetchingMore: boolean = false;
+  private lastVisibleMessage: any;
+  private limit: number = 10;
+  shouldSCrollToBottom: boolean = false;
 
-  private itemsCollection: AngularFirestoreCollection<FirebaseMessage>;
+  private itemsCollection!: AngularFirestoreCollection<FirebaseMessage>;
+  private itemsSubject: BehaviorSubject<FirebaseMessage[]> = new BehaviorSubject<FirebaseMessage[]>([]);
   items: Observable<FirebaseMessage[]>;
   itemsLoaded: boolean = false;
 
@@ -29,22 +34,57 @@ export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.currentUser = userdata;
       }
     )
+    this.items = this.itemsSubject.asObservable();
+    this.loadInitialMessages();
 
-    const queryFn: QueryFn = (ref) => ref.orderBy('createdAt', 'asc');
-
-    this.itemsCollection = this.afs.collection<any>('chatRoom', queryFn);
-    this.items = this.itemsCollection.valueChanges();
-    this.items.subscribe(() => {
-      this.itemsLoaded = true; // Set to true when data is loaded
-    });
   }
 
+  loadInitialMessages(){
+    const queryFn: QueryFn = (ref) => ref.orderBy('createdAt', 'desc').limit(this.limit);
+
+    this.itemsCollection = this.afs.collection<any>('chatRoom', queryFn);
+    this.itemsCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as FirebaseMessage;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    ).subscribe(messages => {
+      const reversedMessages = messages.reverse();
+      this.itemsSubject.next(reversedMessages);
+      this.itemsLoaded = true;
+      if (reversedMessages.length) {
+        this.lastVisibleMessage = reversedMessages[0].createdAt;
+      }
+      this.shouldSCrollToBottom = true;
+      this.scrollToBottom();
+    });
+  }
+  loadMoreMessages() {
+    this.fetchingMore = true;
+    const queryFn: QueryFn = (ref) => ref.orderBy('createdAt', 'desc').startAfter(this.lastVisibleMessage).limit(this.limit);
+    this.afs.collection<FirebaseMessage>('chatRoom', queryFn).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as FirebaseMessage;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    ).subscribe(messages => {
+      if (messages.length) {
+        const currentMessages = this.itemsSubject.value;
+        const reversedMessages = messages.reverse();
+        this.itemsSubject.next([...reversedMessages, ...currentMessages]);
+        this.lastVisibleMessage = reversedMessages[0].createdAt;
+      }
+      this.fetchingMore = false;
+    });
+  }
   addItem(item: any) {
     this.itemsCollection.add(item);
   }
 
-  ngOnInit(): void {
-    
+  ngOnInit() {
+   
   }
 
   ngOnDestroy(): void {
@@ -71,10 +111,33 @@ export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.scrollToBottom();
   }
 
+  ngAfterViewInit(){
+    fromEvent(this.messageContainer?.nativeElement, 'scroll')
+      .pipe(throttleTime(300)) 
+      .subscribe((event: any) => this.onScroll(event));
+    this.scrollToBottom();
+  }
+
   scrollToBottom(): void {
-    try {
-      this.messageContainer!.nativeElement.scrollTop = this.messageContainer?.nativeElement.scrollHeight;
-    } catch(err) { }
+    if (this.shouldSCrollToBottom) {
+      const container = this.messageContainer?.nativeElement;
+      if (container) {
+        try {
+          container.scrollTop = container.scrollHeight;
+        } catch (err) {
+          console.error('Error scrolling to bottom:', err);
+        }
+      }
+    }
+  }
+  
+  
+  onScroll(event: any): void {
+    this.shouldSCrollToBottom = false;
+    const top = event.target.scrollTop === 0;
+    if (top && this.itemsLoaded) {
+      this.loadMoreMessages();
+    }
   }
 
   ownMessage(message: FirebaseMessage){

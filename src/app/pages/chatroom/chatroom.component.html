@@ -1,10 +1,11 @@
 <div *ngIf="!itemsLoaded">
   <mat-spinner></mat-spinner>
 </div>
+
 <!-- chat.component.html -->
 <div *ngIf="itemsLoaded">
   <div class="chat-container">
-    <div class="messages" #messageContainer >
+    <div class="messages" #messageContainer (scroll)="onScroll($event)">
       <div *ngFor="let message of items | async">
         <span *ngIf="ownMessage(message)" class="name-own">Me</span> 
         <span *ngIf="!ownMessage(message)" class="other-user">{{message.sender || 'unknown'}}</span> 
