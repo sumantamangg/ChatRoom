@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FirebaseUser, getDefaultFirebaseUser } from '../../models/firebaseUser.model';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { AppRoutes } from '../../app.routes';
 
 @Component({
@@ -58,12 +58,15 @@ export class LoginComponent implements OnInit, OnDestroy{
       } else {
         this.handleSignIn(email, password);
       }
-      this.submitProgress = false;
     }
   }
   
   handleSignUp(email: string, password: string) {
-    this.authService.signUp(email, password).subscribe({
+    this.authService.signUp(email, password).pipe(
+      finalize(()=>{
+        this.submitProgress = false;
+      })
+    ).subscribe({
       next: () => {
         this.mSB.open("Signup success");
       },
@@ -76,16 +79,22 @@ export class LoginComponent implements OnInit, OnDestroy{
       },
       complete: () => {
         this.resetForm();
+        this.submitProgress = false;
       }
     });
   }
   
   handleSignIn(email: string, password: string) {
-    this.authService.signIn(email, password).subscribe({
+    this.authService.signIn(email, password).pipe(
+      finalize(() => {
+        this.submitProgress = false;
+      })
+    ).subscribe({
       next: () => {
         this.mSB.open('Login success', 'dismiss');
       },
       error: (e) => {
+        // Handle error
         if (e.code === "auth/invalid-credential") {
           this.mSB.open("Email and password did not match", "try again");
         } else {
