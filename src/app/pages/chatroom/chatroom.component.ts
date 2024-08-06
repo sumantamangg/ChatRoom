@@ -17,7 +17,7 @@ export class ChatroomComponent implements OnInit, OnDestroy, AfterViewChecked, A
   newMessage: string = ''; // Input for new messages
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   subscription: Subscription;
-  private fetchingMore: boolean = false;
+  fetchingMore: boolean = false;
   private lastVisibleMessage: any;
   private limit: number = 10;
   shouldSCrollToBottom: boolean = false;
