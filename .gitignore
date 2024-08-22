@@ -43,5 +43,4 @@ Thumbs.db
 
 
 # Ignore environment files for specific environments
-.env.development
-.env.production
+environment/environment.ts
