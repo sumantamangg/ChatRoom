@@ -124,7 +124,8 @@ button:hover {
 
 @media (max-width: 480px) {
   .chat-container {
-    height: 80vh;
+    height: 75vh;
+    width: 88%;
   }
 
   .input-area textarea {
